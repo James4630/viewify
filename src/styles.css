@@ -1,0 +1,16 @@
+body {
+    background-color: white;
+    margin: 0;
+}
+
+img {
+    border-radius: 5%;
+}
+
+#albumDiv {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
