@@ -23,11 +23,10 @@ const hashed = await sha256(codeVerifier)
 const codeChallenge = base64encode(hashed);
 
 
-//change
 const clientId = '2ec4eeb99cc94764b7dd30b898d7e3b1';
 const redirectUri = 'http://127.0.0.1:5500/src/index.html';
 
-const scope = 'user-read-private user-read-email user-read-playback-state';
+const scope = 'user-read-private user-read-email user-read-playback-state user-modify-playback-state';
 const authUrl = new URL("https://accounts.spotify.com/authorize")
 
 window.localStorage.setItem('code_verifier', codeVerifier);

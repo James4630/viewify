@@ -7,10 +7,162 @@ img {
     border-radius: 5%;
 }
 
-#albumDiv {
+.contentDiv {
     background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+/* My beta code:
+#detailsDiv {
+    flex-direction: column;
+    justify-content: end;
+}
+
+#controlsDiv {
+    margin-bottom: 0;
+    background-color: black;
+    height: 15dvh;
+    width: 100vw;
+}
+
+#controlsDiv button {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 50%;
+}
+
+#controlsList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#controlsList li {
+    float: left;
+}
+
+*/
+
+/* ChatGPT: */
+#detailsDiv {
+  /* re-assert column layout and fill the viewport */
+  display: flex;               /* .contentDiv already sets flex; re-declare for clarity */
+  flex-direction: column;
+  justify-content: flex-start; /* title stays at the top */
+  align-items: stretch;        /* make children fill width */
+  height: 100vh;               /* full-screen section */
+  padding: 16px;               /* inner spacing */
+  box-sizing: border-box;
+  gap: 12px;                   /* small gap between title / lyrics / controls */
+  background: transparent;     /* do not change your gradient backdrop */
+}
+
+/* Title at top */
+#detailsDiv #trackName {
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center; /* change to left if you prefer left-aligned title */
+}
+
+/* Scrollable lyrics area that fills available space between title and controls */
+#detailsDiv #lyricsDiv {
+  flex: 1 1 auto;       /* grow to fill remaining space */
+  min-height: 0;        /* IMPORTANT: allows the flex child to shrink and enable scrolling */
+  overflow: auto;       /* scroll when content overflows */
+  padding: 12px;
+  border-radius: 8px;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on mobile */
+  background-color: transparent !important; /* override the inline white so gradient shows */
+  color: inherit;       /* keep text color coming from document / gradient context */
+}
+
+/* Controls pinned to the bottom and full width */
+#detailsDiv #controlsDiv {
+  flex: 0 0 auto;
+  margin-top: auto;     /* pushes controls to the bottom of the column */
+  width: 100%;
+  align-self: stretch;
+  height: 15dvh;        /* keep your preferred height (you can use px or clamp if you want) */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: transparent; /* don't apply own colors to the backdrop */
+}
+
+/* Reset list styling and use flex for the buttons */
+#detailsDiv #controlsList {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* make list items behave nicely (remove float) */
+#detailsDiv #controlsList li {
+  float: none;
+}
+
+/* button sizing & centering (keeps your existing colors) */
+#detailsDiv #controlsList button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+
+/* Lyrics container */
+#lyricsDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+/* Default lyric line */
+.line {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0.4rem 0;
+  text-align: center;
+  transition: all 0.4s ease;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+/* Active lyric line */
+.line.active {
+  font-size: 1.5rem;
+  color: #fff;
+  font-weight: 600;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.line.faded {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
 }
