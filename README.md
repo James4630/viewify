@@ -1,7 +1,7 @@
 # viewify
 Clientside (local) Website, which displays Spotify's currently playing Album cover, Lyrics and playback controls
 
+### Legacy build for older devices (iOS 9+)
 
 ToDo:
-fix desync of Lyrics (eg. when skipping to start of song)
-implement/disable resume button (resuming via API shows unexpected behaviour)
+see main
