@@ -62,6 +62,23 @@ const getToken = async (code) => {
     return response.access_token;
   } catch (err) {
     console.error('getToken error:', err);
+
+    // Remove the code from the URL so the page doesn't stay stuck with ?code=...
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (e) {
+      console.warn('Could not clean URL:', e);
+    }
+
+    // If the error is due to a missing code_verifier, restart auth in the same tab
+    // so a fresh PKCE flow is created. This avoids the user being stuck with an unusable code.
+    if (err && err.message && err.message.includes('code_verifier')) {
+      console.warn('code_verifier missing — restarting auth flow in this tab.');
+      try { auth(); } catch (e) { console.error('Failed to restart auth:', e); }
+      return; // return early — auth() will redirect the user
+    }
+
+    // for other errors, rethrow so upstream can decide
     throw err;
   }
 };
@@ -70,11 +87,6 @@ async function getCurrentPlayer() {
   return fetchWrapper('https://api.spotify.com/v1/me/player');
 }
 
-if (code) {
-  getToken(code)
-    .then(tok => console.log('Token exchange successful'))
-    .catch(err => console.error('Token exchange failed:', err));
-}
 
 //fetch data
 let timerID_fetch;
@@ -343,21 +355,25 @@ async function fetchWrapper(url, options = {}, retry = true) {
 
 
 //init
-function needsAuth() {
-  const token = localStorage.getItem('access_token');
-  return !token;
-}
-
 async function init() {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
+  const token = localStorage.getItem('access_token');
 
+  // Only exchange code if it exists
   if (code) {
-    await getToken(code);
-    window.history.replaceState({}, document.title, window.location.pathname);
+    try {
+      await getToken(code);
+      // Remove code from URL immediately to avoid reuse
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (err) {
+      console.error('Token exchange failed:', err);
+      return;
+    }
   }
 
-  if (needsAuth()) {
+  // If no token, start auth
+  if (!localStorage.getItem('access_token')) {
     console.log("No token found, starting auth flow…");
     auth();
     return;
