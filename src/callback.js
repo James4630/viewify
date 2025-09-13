@@ -95,6 +95,8 @@ function fetchData(){
     getCurrentPlayer()
       .then(player => {
         console.log(player)
+        if (player.item) {
+
         album_cover = player.item.album.images[0].url
         document.getElementById('img').src = album_cover
     
@@ -150,9 +152,14 @@ function fetchData(){
               lyricContainer.appendChild(p)
               lyric.el = p;
             })
+            lyricContainer.scrollTop = 0
             startLyricSync();
 
           })
+        } else {
+          document.getElementById('img').src = "./media/no_track.png"
+          document.getElementById('trackName').innerText = "Nothing Playing"
+        }
       })
       .catch(err => console.error(err));
 }
@@ -360,11 +367,9 @@ async function init() {
   const code = urlParams.get('code');
   const token = localStorage.getItem('access_token');
 
-  // Only exchange code if it exists
   if (code) {
     try {
       await getToken(code);
-      // Remove code from URL immediately to avoid reuse
       window.history.replaceState({}, document.title, window.location.pathname);
     } catch (err) {
       console.error('Token exchange failed:', err);
@@ -372,7 +377,6 @@ async function init() {
     }
   }
 
-  // If no token, start auth
   if (!localStorage.getItem('access_token')) {
     console.log("No token found, starting auth flow…");
     auth();

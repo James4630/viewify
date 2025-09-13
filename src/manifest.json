@@ -1,0 +1,15 @@
+{
+  "short_name": "Viewify",
+  "name": "Viewify",
+  "description": "See the album cover, lyrics and playback controls of the currently playing track on Spotify.",
+  "icons": [
+    {
+      "src": "./media/icon.png",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "black",
+  "background_color": "black"
+}

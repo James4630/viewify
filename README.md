@@ -4,4 +4,4 @@ Clientside (local) Website, which displays Spotify's currently playing Album cov
 ### Legacy build for older devices (iOS 9+)
 
 ToDo:
-see main
+ios 9 support (lol)
